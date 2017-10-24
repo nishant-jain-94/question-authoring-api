@@ -1,0 +1,7 @@
+version: '2'
+services:
+  prod_mongodb:
+    image: mongo:latest
+    hostname: prod_mongodb
+    ports:
+      - "0.0.0.0:29017:27017"
