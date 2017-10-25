@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 
 const historySchema = new Schema({
-  questionId: String,
+  questionId: { type: String, required: true },
   changes: [],
 }, { minimize: false, timestamps: true });
 
 historySchema.set('toJSON', { getters: true });
 
 // Inserts the ChangeSet in the History Collection
-historySchema.statics.insert = async function(changeSet) {
+historySchema.statics.insert = async function insertChangeSet(changeSet) {
   const change = new this();
   Object.assign(change, changeSet);
   const savedChangeSet = await change.save();
@@ -17,11 +18,9 @@ historySchema.statics.insert = async function(changeSet) {
 };
 
 // Fetches the ChangeSet for a questionId
-historySchema.statics.fetch = async function(questionId) {
+historySchema.statics.fetch = async function fetchChangeSet(questionId) {
   const changeSets = await this.find({ questionId }).exec();
-  const transformedChangeSets = changeSets.map((changeSet) => {
-    return changeSet.toJSON();
-  });
+  const transformedChangeSets = changeSets.map(changeSet => changeSet.toJSON());
   return transformedChangeSets;
 };
 

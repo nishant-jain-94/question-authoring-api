@@ -27,6 +27,8 @@
   },
   "scripts": {
     "start": "node bin/www.js",
-    "test": "node_modules/.bin/gulp test"
+    "test": "node_modules/.bin/gulp test",
+    "lint": "node_modules/.bin/eslint . --fix",
+    "test-debug": "node_modules/.bin/gulp test-debug"
   }
 }

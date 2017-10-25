@@ -1,19 +1,17 @@
 const bunyan = require('bunyan');
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const bunyanMiddleware = require('bunyan-middleware');
 
 const ping = require('./ping');
-const config = require('./config');
 const question = require('./question');
 const history = require('./history');
 
 const app = express();
-const port = config.PORT;
 const logger = bunyan.createLogger({ name: 'Question-Authoring-API' });
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bunyanMiddleware({
   headerName: 'X-Request-Id',

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 
 const outcomes = {
   values: ['Remember', 'Comprehend', 'Apply', 'Analyze', 'Synthesize', 'Evaluate'],
@@ -31,28 +32,30 @@ const questionSchema = new Schema({
   },
 }, { minimize: false, timestamps: true });
 
-questionSchema.set('toJSON', { getters: true });
+questionSchema.set('toJSON', { getters: true, hide: '_id' });
 
-questionSchema.statics.init = async function(cb) {
+questionSchema.statics.init = async function init() {
   const question = new this();
   const initializedQuestion = await question.save();
   return initializedQuestion.toJSON();
 };
 
-questionSchema.statics.patch = async function(question, cb) {
-  const query = { _id: question._id };
-  const patchedQuestion = await this.findOneAndUpdate(query, question, { upsert: true, new: true }).exec();
+questionSchema.statics.patch = async function patch(question) {
+  const query = { _id: question.id };
+  const patchedQuestion =
+  await this.findOneAndUpdate(query, question, { upsert: true, new: true }).exec();
   return patchedQuestion.toJSON();
 };
 
-questionSchema.statics.fetch = async function(questionId, cb) {
+questionSchema.statics.fetch = async function fetch(questionId) {
   const query = { _id: questionId };
   const fetchedQuestion = await this.findOne(query).exec();
   return fetchedQuestion.toJSON();
 };
 
-questionSchema.statics.fetchAll = async function(cb) {
-  return await this.find({}).exec();
+questionSchema.statics.fetchAll = async function fetchAll() {
+  const questions = await this.find({}).exec();
+  return questions;
 };
 
 module.exports = mongoose.model('Question', questionSchema, 'question');
