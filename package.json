@@ -27,7 +27,7 @@
     "should": "^13.1.2",
     "supertest": "^3.0.0"
   },
-  "engine": {
+  "engines": {
     "node": "8.6.0"    
   },
   "scripts": {
