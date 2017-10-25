@@ -15,7 +15,7 @@ script:
 after_success:
 - npm run coverage
 deploy:
-  provide: heroku
+  provider: heroku
   api_key:
     secure: I/4fS5CRQkSjRecdbDqwG6d4enxfOXLVRWsY7qfAk3n+2iKtrs7Tq2kSEDC4yO1KFPDSwELAuAhKb0smSe8+rpn0V4QQpXBrN8WE1JNxYLS4yiPwglaKTaQHq5dOGCdzb+CGg6ptgarW3yfAU6YvvHdkY8bVZ4S8m8/UZM4NJ+XuNoJ2z6K20bejBk+xWtMXwVdJi8xNJYrz9O1rj3Q7GXUzYZtl5d/3oBFBlu9iXx7bFYId4BDrIuOI+wOj9AOWS+DH04nbhBYuuQlyjGfbKkgF4FNbetl+eLZaGYLO1zErK5CzPzKzP8vmI/vEoHfsYIjnk9+tXuk11LuOvwJI3wDGwj15V68b23GmALgWkqAopwNvkksL4qJFqGcPiItWqwUZ4xUt8N/w7vIHSbB/HOX8ee1zT7BFPzgAaQiETS4BwQt/zR7s86jl7dmw4RppLm3DN4pG8ypv0qdVzy5gOyXCR18dxhlJJ1sNieDFpt05LFUUlHgh+6qSUqv/1mf3m/vRku9vD7tTbE63TOl+qWcZlGktDLRG/dLQlK5nStF6KDrfPtJ3cE104YXuzBIm/H6a/ks1s7Pce/AbwWuB2MZqEoLJr9jBtkBD8i/guq3dXv62FgE/uwDKVaeR7A6rYlkPysRz4QlnuthQyIj9DcdlKDDTVUA9pgSoFOnP82I=
   app: scribe-question
