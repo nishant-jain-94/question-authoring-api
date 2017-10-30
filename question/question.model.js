@@ -34,7 +34,7 @@ const questionSchema = new Schema({
 
 questionSchema.set('toJSON', { getters: true, hide: '_id' });
 
-questionSchema.statics.init = async function init() {
+questionSchema.statics.initialize = async function init() {
   const question = new this();
   const initializedQuestion = await question.save();
   return initializedQuestion.toJSON();

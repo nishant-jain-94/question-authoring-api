@@ -10,12 +10,12 @@ describe('Question Model\'s', () => {
   });
 
   it('Should initialize a question using init method', async () => {
-    const initializedEmptyQuestion = await Question.init();
+    const initializedEmptyQuestion = await Question.initialize();
     should.exist(initializedEmptyQuestion);
   });
 
   it('Should patch a question object using patch method', async () => {
-    const initializedEmptyQuestion = await Question.init();
+    const initializedEmptyQuestion = await Question.initialize();
     initializedEmptyQuestion.question.rawMdQuestion = '# Question';
     const patchedQuestion = await Question.patch(initializedEmptyQuestion);
     should.exist(patchedQuestion);

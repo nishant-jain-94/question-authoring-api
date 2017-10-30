@@ -5,7 +5,7 @@ const historyController = require('../history/history.controller');
 
 // Initialize an empty question in a Question and History collection
 const initQuestion = async () => {
-  const initializedQuestion = await Question.init();
+  const initializedQuestion = await Question.initialize();
   return initializedQuestion;
 };
 

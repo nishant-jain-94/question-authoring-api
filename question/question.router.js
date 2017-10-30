@@ -13,10 +13,14 @@ router.get('/initialize', async (req, res) => {
   res.json(initializedQuestion);
 });
 
+router.get('/published', async (req, res) => {
+  const publishedQuestions = await questionController.fetchAllQuestions();
+  res.json(publishedQuestions);
+});
+
 router.get('/:questionId', async (req, res) => {
   const fetchedQuestions = await questionController.fetchQuestion(req.params.questionId);
   res.json(fetchedQuestions);
 });
-
 
 module.exports = router;
