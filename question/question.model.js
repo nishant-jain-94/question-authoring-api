@@ -8,8 +8,14 @@ const outcomes = {
 };
 
 const questionSchema = new Schema({
-  concept: String,
-  content: String,
+  concept: {
+    type: String,
+    required: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
   author: {
     name: {
       type: String,
@@ -20,8 +26,18 @@ const questionSchema = new Schema({
       default: 'Anonymous',
     },
   },
-  player: String,
-  evaluator: String,
+  questionType: {
+    type: String,
+    required: true,
+  },
+  player: {
+    type: String,
+    required: true,
+  },
+  evaluator: {
+    type: String,
+    required: true,
+  },
   expectedOutcome: {
     type: String,
     enum: outcomes,
