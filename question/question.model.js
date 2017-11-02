@@ -10,11 +10,11 @@ const outcomes = {
 const questionSchema = new Schema({
   concept: {
     type: String,
-    required: true,
+    // required: true
   },
   content: {
     type: String,
-    required: true,
+    // required: true,
   },
   author: {
     name: {
@@ -28,15 +28,15 @@ const questionSchema = new Schema({
   },
   questionType: {
     type: String,
-    required: true,
+    // required: true,
   },
   player: {
     type: String,
-    required: true,
+    // required: true,
   },
   evaluator: {
     type: String,
-    required: true,
+    // required: true,
   },
   expectedOutcome: {
     type: String,
