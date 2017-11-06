@@ -63,3 +63,6 @@ typings/
 
 # Code Editor Configuration file
 .vscode
+
+# CSV test file
+assessmentItem.csv
