@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const bunyanMiddleware = require('bunyan-middleware');
 
 const ping = require('./ping');
+const draft = require('./draft');
 const question = require('./question');
 const history = require('./history');
 const bulkUpload = require('./bulk_upload');
@@ -32,6 +33,15 @@ app.use(bunyanMiddleware({
 app.use('/ping', ping);
 app.use('/history', history);
 app.use('/question', question);
+app.use('/questions/draft', draft);
 app.use('/bulkupload', bulkUpload);
+
+app.use((err, req, res, next) => {
+  req.log.error(err);
+  res.status(err.status || 500);
+  res.json({ message: err.message });
+  next();
+});
+
 
 module.exports = app;

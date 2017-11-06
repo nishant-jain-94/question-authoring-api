@@ -1,29 +1,53 @@
-// Refers to the Collection containing the Changeset for every question
 const History = require('./history.model');
 const jdr = require('json-diff-rfc6902');
 
 // Calculates the differences between the oldQuestion and the newQuestion
 const calculateDiffs = (oldQuestion, newQuestion) => {
-  const diffs = jdr.diff(oldQuestion, newQuestion);
-  return diffs;
+  try {
+    const diffs = jdr.diff(oldQuestion, newQuestion);
+    return diffs;
+  } catch (error) {
+    throw Error(error);
+  }
 };
 
 // Stores the differences between the Old and the New Question in History Collection
 const storeDiffs = async (changeSet) => {
-  const history = new History();
-  Object.assign(history, changeSet);
-  const storedChangeSet = await History.insert(changeSet);
-  return storedChangeSet;
+  try {
+    const storedChangeSet = await History.insert(changeSet);
+    return storedChangeSet;
+  } catch (error) {
+    throw Error(error);
+  }
+};
+
+const calculateAndStoreDiffs = async (oldQuestion, newQuestion) => {
+  try {
+    const diffs = calculateDiffs(oldQuestion, newQuestion);
+    const changeSet = {
+      questionId: newQuestion.id,
+      changes: diffs,
+    };
+    const savedChangeSet = await storeDiffs(changeSet);
+    return savedChangeSet;
+  } catch (error) {
+    throw Error(error);
+  }
 };
 
 // Fetches changeSet of a given questionId
-const fetchQuestion = async (questionId) => {
-  const fetchedQuestion = await History.fetch(questionId);
-  return fetchedQuestion;
+const fetchChanges = async (questionId) => {
+  try {
+    const fetchedQuestion = await History.fetch(questionId);
+    return fetchedQuestion;
+  } catch (error) {
+    throw Error(error);
+  }
 };
 
 module.exports = {
-  calculateDiffs,
   storeDiffs,
-  fetchQuestion,
+  fetchChanges,
+  calculateDiffs,
+  calculateAndStoreDiffs,
 };

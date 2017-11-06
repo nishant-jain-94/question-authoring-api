@@ -4,25 +4,7 @@ const config = require('../../config');
 const jdr = require('json-diff-rfc6902');
 const History = require('../history.model.js');
 
-const oldQuestion = {
-  questionId: mongoose.Types.ObjectId().toString(),
-};
-
-const newQuestion = {
-  questionId: oldQuestion.questionId,
-  concept: 'Two Way Binding',
-  content: 'Introduction to Two Way Binding',
-  author: {
-    name: 'Nishant Jain',
-    userId: mongoose.Types.ObjectId(),
-  },
-  player: 'mcq-player',
-  evaluator: 'self',
-  expectedOutcome: 'Remember',
-  question: {
-    rawMdQuestion: '# Question\n What is the difference between React and AngularJS',
-  },
-};
+const questionId = mongoose.Types.ObjectId().toString();
 
 describe('History Model', () => {
   before(async () => {
@@ -30,9 +12,24 @@ describe('History Model', () => {
     await History.remove({});
   });
 
-  it('insert method should insert changeSets in the History collection', async () => {
-    const changes = jdr.diff(oldQuestion, newQuestion);
-    const { questionId } = oldQuestion;
+  it('Should insert ChangeSets in the History collection', async () => {
+    const newQuestion = {
+      id: questionId,
+      concept: 'Two Way Binding',
+      content: 'Introduction to Two Way Binding',
+      author: {
+        name: 'Nishant Jain',
+        userId: mongoose.Types.ObjectId(),
+      },
+      player: 'mcq-player',
+      evaluator: 'self',
+      expectedOutcome: 'Remember',
+      question: {
+        rawMdQuestion: '# Question\n What is the difference between React and AngularJS',
+      },
+    };
+
+    const changes = jdr.diff({ }, newQuestion);
     const changeSet = { questionId, changes };
     const insertedHistory = await History.insert(changeSet);
     should.exist(insertedHistory);
@@ -47,7 +44,7 @@ describe('History Model', () => {
   });
 
   it('fetch method should fetch changeSets from the History Collection', async () => {
-    const results = await History.fetch(oldQuestion.questionId);
+    const results = await History.fetch(questionId);
     should.exist(results);
   });
 
