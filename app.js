@@ -6,6 +6,7 @@ const bunyanMiddleware = require('bunyan-middleware');
 const ping = require('./ping');
 const question = require('./question');
 const history = require('./history');
+const bulkUpload = require('./bulk_upload');
 
 const app = express();
 const logger = bunyan.createLogger({ name: 'Question-Authoring-API' });
@@ -31,5 +32,6 @@ app.use(bunyanMiddleware({
 app.use('/ping', ping);
 app.use('/history', history);
 app.use('/question', question);
+app.use('/bulkupload', bulkUpload);
 
 module.exports = app;
