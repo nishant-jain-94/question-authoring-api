@@ -34,6 +34,17 @@ describe('History Controller', () => {
     should.exist(storedChangeSet);
   });
 
+  it('Should fetch all the changeset using questionId', async () => {
+    const changeSets = await historyController.fetchChanges(questionId);
+    should.exist(changeSets);
+    changeSets.should.be.instanceof(Array);
+    changeSets.length.should.be.exactly(1);
+    changeSets.forEach((changeSet) => {
+      changeSet.should.have.property('questionId');
+      changeSet.should.have.property('changes');
+    });
+  });
+
   after(async () => {
     await History.remove({});
     await mongoose.connection.close();

@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const bunyanMiddleware = require('bunyan-middleware');
 
 const ping = require('./ping');
+const draft = require('./draft');
 const question = require('./question');
 const history = require('./history');
 
@@ -31,5 +32,6 @@ app.use(bunyanMiddleware({
 app.use('/ping', ping);
 app.use('/history', history);
 app.use('/question', question);
+app.use('/questions/draft', draft);
 
 module.exports = app;

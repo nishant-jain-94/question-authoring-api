@@ -10,11 +10,15 @@ const outcomes = {
 const questionSchema = new Schema({
   concept: {
     type: String,
-    // required: true
+    required: true,
+  },
+  subject: {
+    type: String,
+    default: 'No Subject',
   },
   content: {
     type: String,
-    // required: true,
+    required: true,
   },
   author: {
     name: {
@@ -28,50 +32,69 @@ const questionSchema = new Schema({
   },
   questionType: {
     type: String,
-    // required: true,
+    required: true,
   },
   player: {
     type: String,
-    // required: true,
+    required: true,
   },
   evaluator: {
     type: String,
-    // required: true,
+    required: true,
   },
   expectedOutcome: {
     type: String,
     enum: outcomes,
+    required: true,
   },
   question: {
     type: Schema.Types.Mixed,
-    default: {},
+    required: true,
   },
 }, { minimize: false, timestamps: true });
 
 questionSchema.set('toJSON', { getters: true, hide: '_id' });
 
-questionSchema.statics.initialize = async function init() {
-  const question = new this();
-  const initializedQuestion = await question.save();
-  return initializedQuestion.toJSON();
+/**
+ * TL;DR
+ * Creates or Updates a question.
+ * ------------------------------------------------------------------------------------------------
+ * Given a `question`, the publish method looks for an existing
+ * question. If the question already exists then the `existingQuestion`
+ * is updated with the `question` which was inputted forming the `current`
+ * question. Else the a new instance of the question is created and is
+ * updated with the `question` which was inputted forming the current
+ * of the question. The `current` question is then updated in the database.
+ *
+ * @param {any} question
+ * @returns {Object} publishedQuestion
+ */
+questionSchema.statics.publish = async function publish(question) {
+  const [existingQuestion] = question.id ?
+    await this.find({ _id: question.id }).exec() :
+    [new this()];
+
+  Object.assign(existingQuestion, question);
+  // const current = new this(question);
+  const publishedQuestion = await existingQuestion.save();
+  return publishedQuestion.toJSON();
 };
 
-questionSchema.statics.patch = async function patch(question) {
-  const query = { _id: question.id };
-  const patchedQuestion =
-  await this.findOneAndUpdate(query, question, { upsert: true, new: true }).exec();
-  return patchedQuestion.toJSON();
-};
-
-questionSchema.statics.fetch = async function fetch(questionId) {
-  const query = { _id: questionId };
-  const fetchedQuestion = await this.findOne(query).exec();
-  return fetchedQuestion.toJSON();
-};
-
-questionSchema.statics.fetchAll = async function fetchAll() {
-  const questions = await this.find({}).exec();
-  return questions;
+/**
+ * Fetches all published question from the question collection.
+ * By default it fetches 100 question without any specific criteria.
+ * The criteria can be overidden by the `query` parameter.
+ * Number of questions per page can be controlled by the `limit` and the `page` parameters.
+ *
+ * @param {any} [query={}]     Criteria by which the results are to be feched.
+ * @param {number} [limit=100] Limits the number of results to hundred.
+ * @param {number} [page=1]    A parameter to page results.
+ * @returns {Array<Question>}  An array of published question matching the query.
+ */
+questionSchema.statics.fetch = async function fetch(query = {}, limit = 100, page = 1) {
+  const skips = limit * (page - 1);
+  const fetchedQuestions = await this.find(query).skip(skips).limit(limit).exec();
+  return fetchedQuestions.map(question => question.toJSON());
 };
 
 module.exports = mongoose.model('Question', questionSchema, 'question');

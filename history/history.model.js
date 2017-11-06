@@ -11,9 +11,8 @@ historySchema.set('toJSON', { getters: true });
 
 // Inserts the ChangeSet in the History Collection
 historySchema.statics.insert = async function insertChangeSet(changeSet) {
-  const change = new this();
-  Object.assign(change, changeSet);
-  const savedChangeSet = await change.save();
+  const diffs = new this(changeSet);
+  const savedChangeSet = await diffs.save();
   return savedChangeSet.toJSON();
 };
 

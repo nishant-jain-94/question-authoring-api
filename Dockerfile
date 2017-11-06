@@ -12,4 +12,4 @@ RUN yarn install
 COPY . /usr/src/app
 
 # Start serving files using yarn start
-CMD ["yarn", "start"]
+CMD ["npm", "start"]
