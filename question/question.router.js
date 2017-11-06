@@ -4,16 +4,17 @@ const _ = require('lodash');
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   try {
     const publishedQuestion = await questionController.publish(req.body);
+    req.log.info(publishedQuestion);
     res.json(publishedQuestion);
   } catch (error) {
-    res.status(500).json(error);
+    next(error);
   }
 });
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   try {
     const query = _.omit(req.query, 'limit', 'page');
     const publishedQuestions = await questionController.fetch(
@@ -21,9 +22,10 @@ router.get('/', async (req, res) => {
       req.query.limit,
       req.query.page,
     );
+    req.log.info(publishedQuestions);
     res.json(publishedQuestions);
   } catch (error) {
-    res.status(500).json(error);
+    next(error);
   }
 });
 

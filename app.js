@@ -34,4 +34,11 @@ app.use('/history', history);
 app.use('/question', question);
 app.use('/questions/draft', draft);
 
+app.use((err, req, res, next) => {
+  req.log.error(err);
+  res.status(err.status || 500);
+  res.json({ message: err.message });
+  next();
+});
+
 module.exports = app;

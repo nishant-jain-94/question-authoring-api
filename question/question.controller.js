@@ -6,8 +6,12 @@ const Question = require('./question.model');
 const History = require('../history/history.controller');
 
 const fetch = async (query, limit, page) => {
-  const questions = await Question.fetch(query, limit, page);
-  return questions;
+  try {
+    const questions = await Question.fetch(query, limit, page);
+    return questions;
+  } catch (error) {
+    throw Error(error);
+  }
 };
 
 const publish = async (question) => {

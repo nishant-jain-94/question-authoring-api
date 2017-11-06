@@ -70,14 +70,16 @@ questionSchema.set('toJSON', { getters: true, hide: '_id' });
  * @returns {Object} publishedQuestion
  */
 questionSchema.statics.publish = async function publish(question) {
-  const [existingQuestion] = question.id ?
-    await this.find({ _id: question.id }).exec() :
-    [new this()];
-
-  Object.assign(existingQuestion, question);
-  // const current = new this(question);
-  const publishedQuestion = await existingQuestion.save();
-  return publishedQuestion.toJSON();
+  try {
+    const [existingQuestion] = question.id ?
+      await this.find({ _id: question.id }).exec() :
+      [new this()];
+    Object.assign(existingQuestion, question);
+    const publishedQuestion = await existingQuestion.save();
+    return publishedQuestion.toJSON();
+  } catch (error) {
+    throw error;
+  }
 };
 
 /**
@@ -92,9 +94,13 @@ questionSchema.statics.publish = async function publish(question) {
  * @returns {Array<Question>}  An array of published question matching the query.
  */
 questionSchema.statics.fetch = async function fetch(query = {}, limit = 100, page = 1) {
-  const skips = limit * (page - 1);
-  const fetchedQuestions = await this.find(query).skip(skips).limit(limit).exec();
-  return fetchedQuestions.map(question => question.toJSON());
+  try {
+    const skips = limit * (page - 1);
+    const fetchedQuestions = await this.find(query).skip(skips).limit(limit).exec();
+    return fetchedQuestions.map(question => question.toJSON());
+  } catch (error) {
+    throw error;
+  }
 };
 
 module.exports = mongoose.model('Question', questionSchema, 'question');
