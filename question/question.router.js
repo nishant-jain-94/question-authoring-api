@@ -29,4 +29,14 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.get('/:skill', async (req, res, next) => {
+  try {
+    const { skill } = req.params;
+    const questions = await questionController.fetchQuestionsBySkill(skill);
+    res.json(questions);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

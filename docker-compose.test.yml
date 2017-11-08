@@ -5,3 +5,19 @@ services:
     hostname: test_mongodb
     ports:
       - "0.0.0.0:29018:27017"
+  graphdb:
+    image: neo4j:latest
+    environment:
+      - NEO4J_AUTH=neo4j/password
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+    volumes:
+      - ./db/dbms:/data/dbms
+      - ./logs/graphdb:/logs
+    ports:
+      - "7482:7474"
+      - "7693:7687"
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    restart: always

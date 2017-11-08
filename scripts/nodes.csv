@@ -1,0 +1,32 @@
+label,name,description,contentUrl
+skill,Javascript MEAN FullStack,"A Full Stack Javascript which includes MongoDB, ExpressJS, AngularJS and NodeJS",
+skill,Javascript MERN FullStack,"A Full Stack Javascript which includes MongoDB, ExpressJS, ReactJS and NodeJS",
+skill,Java FullStack,A FullStack Java which includes Hibernate and Spring,
+skill,Java QA FullStack,A FullStack Java which includes Hibernate and Spring and latest tools to Assure Quality,
+skill,Dev Ops,A Skill which unifies software development (Dev) and software operation.,
+concept,NodeJS,"Node.js is a platform built on Chrome's JavaScript runtime for easily building fast and scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.",
+concept,ExpressJS,Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.,
+concept,MongoDB,MongoDB is an open source database that uses a document-oriented data model. MongoDB is one of several database types to arise in the mid-2000s under the NoSQL banner.,
+concept,AngularJS,AngularJS is a structural framework for dynamic web apps. It lets you use HTML as your template language and lets you extend HTML's syntax to express your application's components clearly and succinctly. AngularJS's data binding and dependency injection eliminate much of the code you would otherwise have to write.,
+concept,File System in NodeJS,Node.js includes fs module to access physical file system. The fs module is responsible for all the asynchronous or synchronous file I/O operations.,
+concept,HTTP Server using NodeJS,"Node.js has a built-in module called HTTP, which allows Node.js to transfer data over the Hyper Text Transfer Protocol.
+",
+concept,package.json in NodeJS,"All npm packages contain a file, usually in the project root, called package.json - this file holds various metadata relevant to the project. This file is used to give information to npm that allows it to identify the project as well as handle the project's dependencies.",
+concept,Two Way Binding in AngularJS,Data Binding. Data-binding in AngularJS apps is the automatic synchronization of data between the model and view components. The way that AngularJS implements data-binding lets you treat the model as the single-source-of-truth in your application. The view is a projection of the model at all times.,
+concept,API end points using ExpressJS,,
+concept,Collections in MongoDB,,
+concept,Middlewares in ExpressJS,,
+concept,Relating MongoDB to SQL,,
+content,File System - NodeJS,,https://www.youtube.com/watch?v=XFRQHhKTutI
+content,Setup Server in 3 Minutes,,https://www.youtube.com/watch?v=oa9m8321_nw
+content,The package.json in NodeJS,,https://www.youtube.com/watch?v=_eRwjuIDJ2Y
+content,Two Way DataBinding in AngularJS,,https://www.youtube.com/watch?v=GLo9aXJW0Tc
+content,Builiding API using Express and NodeJS,,https://www.youtube.com/watch?v=0M2S_7-Tcsc
+content,Creating collection in MongoDB,,"https://www.youtube.com/watch?v=5a7iDm0j230
+"
+content,Middleware Explained,,"https://www.youtube.com/watch?v=9HOem0amlyg
+"
+content,Transitioning SQL to MongoDB,,"
+https://www.youtube.com/watch?v=J8V_8PqCH6"
+user,Rohan,,
+user,Taniya,,

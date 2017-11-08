@@ -3,18 +3,19 @@ const path = require('path');
 const should = require('should');
 const request = require('supertest');
 const mongoose = require('mongoose');
-const config = require('../../config');
+const Neo4jWrapper = require('simple-neo4j-wrapper');
 
+const config = require('../../config');
 const app = require('../../app');
 const Question = require('../question.model');
 
 const mdQuestion = fs.readFileSync(path.join(__dirname, 'mockQuestion.md'), 'utf8');
-
 let publishedQuestion;
 
 describe('Question Router', () => {
   before(async () => {
     await mongoose.connect(config.MONGODB_URL);
+    await new Neo4jWrapper(config.NEO4J_URL, config.NEO4J_USERNAME, config.NEO4J_PASSWORD);
   });
 
   it('Should publish a question', (done) => {
@@ -27,6 +28,9 @@ describe('Question Router', () => {
       expectedOutcome: 'Remember',
       question: {
         mdQuestion,
+      },
+      answer: {
+        content: 'Option-1',
       },
     };
 
@@ -104,5 +108,7 @@ describe('Question Router', () => {
   after(async () => {
     await Question.remove({});
     await mongoose.connection.close();
+    await Neo4jWrapper.sessions.get(config.NEO4J_URL).close();
+    await Neo4jWrapper.drivers.get(config.NEO4J_URL).close();
   });
 });

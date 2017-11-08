@@ -51,6 +51,10 @@ const questionSchema = new Schema({
     type: Schema.Types.Mixed,
     required: true,
   },
+  answer: {
+    type: Schema.Types.Mixed,
+    required: true,
+  },
 }, { minimize: false, timestamps: true });
 
 questionSchema.set('toJSON', { getters: true, hide: '_id' });

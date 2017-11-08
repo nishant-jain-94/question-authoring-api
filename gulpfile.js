@@ -34,4 +34,4 @@ gulp.task('test-debug', () => {
     });
 });
 
-gulp.task('default', ['test']);
+gulp.task('default', ['lint', 'test']);

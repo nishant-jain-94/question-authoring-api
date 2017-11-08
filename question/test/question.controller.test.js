@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const should = require('should');
 const mongoose = require('mongoose');
+const Neo4jWrapper = require('simple-neo4j-wrapper');
+
 
 const config = require('../../config');
 const Question = require('../question.model');
@@ -13,6 +15,7 @@ let publishedQuestion;
 describe('Question Controller', () => {
   before(async () => {
     await mongoose.connect(config.MONGODB_URL);
+    await new Neo4jWrapper(config.NEO4J_URL, config.NEO4J_USERNAME, config.NEO4J_PASSWORD);
   });
 
   it('Should Publish Question', async () => {
@@ -25,6 +28,9 @@ describe('Question Controller', () => {
       expectedOutcome: 'Remember',
       question: {
         mdQuestion,
+      },
+      answer: {
+        content: 'Option-1',
       },
     };
 
@@ -78,5 +84,7 @@ describe('Question Controller', () => {
   after(async () => {
     await Question.remove({});
     await mongoose.connection.close();
+    await Neo4jWrapper.sessions.get(config.NEO4J_URL).close();
+    await Neo4jWrapper.drivers.get(config.NEO4J_URL).close();
   });
 });

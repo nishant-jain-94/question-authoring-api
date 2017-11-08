@@ -23,6 +23,9 @@ describe('Question Model', () => {
       question: {
         mdQuestion,
       },
+      answer: {
+        content: 'Option-1',
+      },
     };
 
     const publishedQuestion = await Question.publish(question);

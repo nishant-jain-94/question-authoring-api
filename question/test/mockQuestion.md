@@ -15,6 +15,3 @@ Choose one option amongst all.
 
 # Option-4
 .slice returns a new array without modifying the current array
-
-# Answer
-Option-5
