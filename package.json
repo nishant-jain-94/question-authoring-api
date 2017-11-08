@@ -10,6 +10,7 @@
     "json-diff-rfc6902": "^1.3.3",
     "lodash": "^4.17.4",
     "mongoose": "^4.12.4",
+    "multer": "^1.3.0",
     "simple-neo4j-wrapper": "^1.0.5",
     "sinon": "^4.0.1"
   },

@@ -3,7 +3,6 @@ const _ = require('lodash');
 const csv = require('fast-csv');
 
 const questionController = require('../question/question.controller');
-const config = require('../config');
 
 const mandatoryFields = [
   'concept',
@@ -28,8 +27,8 @@ const returnPromiseAfterPublish = assessmentItem =>
     }
   });
 
-const readAndPublish = async () => {
-  const stream = fs.createReadStream(config.fileUploadPath);
+const readAndPublish = (file) => {
+  const stream = fs.createReadStream(file.path);
   csv
     .fromStream(stream, { objectMode: true, headers: true })
     .on('data', (data) => {
@@ -47,7 +46,7 @@ const readAndPublish = async () => {
             return `Line ${index + 2} was inserted`;
           });
           console.log(newValues);
-          fs.unlink(config.fileUploadPath, () => {
+          fs.unlink(file.path, () => {
             console.log('File has been deleted');
           });
         });

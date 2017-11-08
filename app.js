@@ -7,7 +7,7 @@ const ping = require('./ping');
 const draft = require('./draft');
 const question = require('./question');
 const history = require('./history');
-const bulkUpload = require('./bulk_upload');
+const fileUpload = require('./file_upload');
 
 const app = express();
 const logger = bunyan.createLogger({ name: 'Question-Authoring-API' });
@@ -34,7 +34,7 @@ app.use('/ping', ping);
 app.use('/history', history);
 app.use('/question', question);
 app.use('/questions/draft', draft);
-app.use('/bulkupload', bulkUpload);
+app.use('/fileUpload', fileUpload);
 
 app.use((err, req, res, next) => {
   req.log.error(err);
