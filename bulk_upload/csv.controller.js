@@ -1,42 +1,59 @@
+const fs = require('fs');
+const _ = require('lodash');
+const csv = require('fast-csv');
+
 const questionController = require('../question/question.controller');
 const config = require('../config');
-const fs = require('fs');
-const csv = require('fast-csv');
-const _ = require('lodash');
+
+const mandatoryFields = [
+  'concept',
+  'content',
+  'expectedOutcome',
+  'questionType',
+  'player',
+  'evaluator',
+];
+
+const promises = [];
+
+const returnPromiseAfterPublish = assessmentItem =>
+  new Promise(async (resolve) => {
+    let value;
+    try {
+      value = await questionController.publish(assessmentItem);
+    } catch (error) {
+      value = error;
+    } finally {
+      resolve(value);
+    }
+  });
 
 const readAndPublish = async () => {
   const stream = fs.createReadStream(config.fileUploadPath);
-  let publishedQuestion = '';
-  await csv
+  csv
     .fromStream(stream, { objectMode: true, headers: true })
-    .validate(data =>
-      data.concept && data.content && data.expectedOutcome && data.player && data.evaluator)
-    .on('data-invalid', () => {
-      console.log('Error: Primary fields  are missing!!!');
+    .on('data', (data) => {
+      const assessmentItem = _.pick(data, mandatoryFields);
+      assessmentItem.question = _.omit(data, mandatoryFields);
+      promises.push(returnPromiseAfterPublish(assessmentItem));
     })
-    .on('data', async (data) => {
-      let assessmentItem = data;
-      let primaryObject = {};
-      primaryObject = _.pick(assessmentItem, ['concept', 'content', 'expectedOutcome', 'player', 'evaluator']);
-      _.forOwnRight(assessmentItem, (value, key) => {
-        if (key === 'concept' || key === 'content' || key === 'expectedOutcome' || key === 'player' || key === 'evaluator') {
-          _.unset(assessmentItem, key);
-        }
-      });
-      const secondaryObject = assessmentItem;
-      primaryObject.question = secondaryObject;
-      assessmentItem = primaryObject;
-      const initialisedQuestion = await questionController.initQuestion();
-      assessmentItem.id = initialisedQuestion.id;
-      publishedQuestion = await questionController.publishQuestion(assessmentItem);
-      return publishedQuestion;
-    })
-    .on('error', (err) => {
-      console.log(`Error is ${err}`);
+    .on('end', () => {
+      Promise.all(promises)
+        .then((values) => {
+          const newValues = values.map((value, index) => {
+            if (Object.keys(value).length === 0) {
+              return `${value} in line ${index + 2} in the csv`;
+            }
+            return `Line ${index + 2} was inserted`;
+          });
+          console.log(newValues);
+          fs.unlink(config.fileUploadPath, () => {
+            console.log('File has been deleted');
+          });
+        });
     });
 };
 
 module.exports = {
   readAndPublish,
 };
-
