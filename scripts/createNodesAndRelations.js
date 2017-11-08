@@ -3,8 +3,10 @@ const async = require('async');
 const bunyan = require('bunyan');
 const Neo4jWrapper = require('simple-neo4j-wrapper');
 
+const { NEO4J_URL, NEO4J_USERNAME, NEO4J_PASSWORD } = require('../config');
+
 const logger = bunyan.createLogger({ name: 'CreateNodesAndRelationships' });
-const neo4j = new Neo4jWrapper('bolt://localhost:7690', 'neo4j', 'password');
+const neo4j = new Neo4jWrapper(NEO4J_URL, NEO4J_USERNAME, NEO4J_PASSWORD);
 
 // Gets the absolute path to nodes.csv
 const pathToNodes = path.join(__dirname, 'nodes.csv');

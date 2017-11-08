@@ -1,11 +1,13 @@
 version: '2'
 services:
-  # question_authoring_api:
-  #   build: .
-  #   ports:
-  #     - "0.0.0.0:4000:4000"
-  #   depends_on:
-  #     - prod_mongodb
+  question_authoring_api:
+    build: .
+    ports:
+      - "0.0.0.0:4000:4000"
+    links:
+      - prod_mongodb
+      - graphdb
+    restart: always
   prod_mongodb:
     image: mongo:latest
     hostname: prod_mongodb
