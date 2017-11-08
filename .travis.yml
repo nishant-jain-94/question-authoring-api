@@ -7,6 +7,7 @@ services:
 - docker
 before_script:
 - docker-compose -f docker-compose.test.yml up --build -d
+- ./scripts/wait-for-it/wait-for-it.sh --timeout=0 localhost:7693 -- echo "Neo4j is up"
 install:
 - npm install
 script:
