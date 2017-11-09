@@ -11,15 +11,10 @@ const config = require('../config');
 const port = config.PORT;
 app.set('port', port);
 
-(async () => {
-  try {
-    await new Neo4jWrapper(config.NEO4J_URL, config.NEO4J_USERNAME, config.NEO4J_PASSWORD);
-    await mongoose.connect(config.MONGODB_URL);
-  } catch (error) {
-    logger.error(error);
-    process.exit(1);
-  }
-})();
+const neo4j = new Neo4jWrapper(config.NEO4J_URL, config.NEO4J_USERNAME, config.NEO4J_PASSWORD);
+mongoose.connect(config.MONGODB_URL);
+// Had to assign to avoid linting errors.
+app.neo4j = neo4j;
 
 const server = http.createServer(app);
 server.listen(port);

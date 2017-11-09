@@ -1,5 +1,8 @@
 FROM node:alpine
 
+# Add Bash
+RUN apk add --no-cache bash
+
 # Create app directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
