@@ -2,6 +2,7 @@ const fs = require('fs');
 const _ = require('lodash');
 const csv = require('fast-csv');
 
+const CSVStatus = require('./csv.model');
 const questionController = require('../question/question.controller');
 
 const mandatoryFields = [
@@ -12,6 +13,8 @@ const mandatoryFields = [
   'player',
   'evaluator',
 ];
+
+const statusObject = {};
 
 const promises = [];
 
@@ -37,22 +40,35 @@ const readAndPublish = (file) => {
       promises.push(returnPromiseAfterPublish(assessmentItem));
     })
     .on('end', () => {
+      statusObject.fileName = file.originalname;
+      statusObject.errorMessages = [];
       Promise.all(promises)
         .then((values) => {
-          const newValues = values.map((value, index) => {
+          values.map((value, index) => {
             if (Object.keys(value).length === 0) {
+              statusObject.errorMessages.push(`${value} in line ${index + 2} in the csv`);
               return `${value} in line ${index + 2} in the csv`;
             }
             return `Line ${index + 2} was inserted`;
           });
-          console.log(newValues);
+          CSVStatus.saveStatus(statusObject);
           fs.unlink(file.path, () => {
-            console.log('File has been deleted');
+            // console.log('File has been deleted');
           });
         });
     });
 };
 
+const fetchAllStatuses = async (query, limit, page) => {
+  try {
+    const statuses = await CSVStatus.fetch(query, limit, page);
+    return statuses;
+  } catch (error) {
+    throw Error(error);
+  }
+};
+
 module.exports = {
   readAndPublish,
+  fetchAllStatuses,
 };
