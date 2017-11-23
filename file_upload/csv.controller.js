@@ -16,7 +16,7 @@ const mandatoryFields = [
 
 const statusObject = {};
 
-const promises = [];
+let promises = [];
 
 const returnPromiseAfterPublish = assessmentItem =>
   new Promise(async (resolve) => {
@@ -44,14 +44,22 @@ const readAndPublish = (file) => {
       statusObject.errorMessages = [];
       Promise.all(promises)
         .then((values) => {
-          values.map((value, index) => {
-            if (Object.keys(value).length === 0) {
-              statusObject.errorMessages.push(`${value} in line ${index + 2} in the csv`);
-              return `${value} in line ${index + 2} in the csv`;
-            }
-            return `Line ${index + 2} was inserted`;
-          });
+          if (values.length !== 0) {
+            values.map((value, index) => {
+              if (Object.keys(value).length === 0) {
+                statusObject.errorMessages.push(`${value} in line ${index + 2} in the csv`);
+                statusObject.status = 'Questions published with some exceptions';
+                return `${value} in line ${index + 2} in the csv`;
+              }
+              statusObject.status = 'All lines were inserted';
+              return `Line ${index + 2} was inserted`;
+            });
+          } else {
+            statusObject.status = 'No data in CSV file';
+            statusObject.errorMessages.push('No data in CSV file');
+          }
           CSVStatus.saveStatus(statusObject);
+          promises = [];
           fs.unlink(file.path, () => {
             // console.log('File has been deleted');
           });

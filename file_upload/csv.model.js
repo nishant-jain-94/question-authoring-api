@@ -13,6 +13,10 @@ const csvStatusSchema = new Schema({
     default: [],
   },
 
+  status: {
+    type: String,
+  },
+
   userId: {
     type: String,
     default: '232832K80',
